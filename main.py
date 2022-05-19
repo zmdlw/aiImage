@@ -45,7 +45,7 @@ model = NeuralNet().to(device)
 learning_rate = 0.001
 
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), ir=learning_rate)
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 def train(train_dataloader, model, loss_fn, optimizer):
     for batch, (x, y) in enumerate(train_dataloader):
