@@ -12,12 +12,6 @@ from torchvision.transforms import ToTensor
 
 train_datasets = datasets.MNIST(root='data', train=True, download=True, transform=ToTensor())
 test_dataset = datasets.MNIST(root='data', train=False, download=True, transform=ToTensor())
-
-# image, label = train_datasets[0]
-# plt.imshow(image, cmap='gray')
-# plt.show()
-# print('label: ', label)
-
 batch_size = 100
 
 train_dataloader = DataLoader(train_datasets, batch_size=batch_size, shuffle=True)
@@ -45,6 +39,7 @@ model = NeuralNet().to(device)
 learning_rate = 0.001
 
 loss_fn = nn.CrossEntropyLoss()
+torch.set_grad_enabled(True) 
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 def train(train_dataloader, model, loss_fn, optimizer):
@@ -53,8 +48,6 @@ def train(train_dataloader, model, loss_fn, optimizer):
 
         pred = model(x)
         loss = loss_fn(pred, y)
-
-        loss.backward()
         optimizer.step()
         optimizer.zero_grad()
 
@@ -82,6 +75,7 @@ def test(test_dataloader, model, loss_fn):
 epochs = 10
 for t in range(epochs):
     print(f'Epoch {t+1}\n ---------------------------')
-    train(train_dataloader, model, loss_fn, optimizer)
+    train(train_dataloader, model)
     test(test_dataloader, model, loss_fn)
+
 print("Done!")
